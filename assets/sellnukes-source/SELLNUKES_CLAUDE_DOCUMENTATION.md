@@ -283,7 +283,7 @@ were retained. Proof: `docs/verification/creator-dashboard/free-private-servers.
 Version `0.9.0` and a new WHAT'S NEW entry announce the badges and free private servers.
 The dashboard changes are live; the owner must publish the code update for runtime badge IDs.
 Validation: `./scripts/check.sh` **ALL PASSED** in managed checkout
-`/Users/jamesbayless/.codex/worktrees/4399/SellNukes` at `5578a36` plus this task's changes:
+`~/.codex/worktrees/4399/SellNukes` at `5578a36` plus this task's changes:
 formatting, Selene, strict Luau type-check, Studio-style compile, and **108 standalone suites**.
 Badge integration: 239 checks; notification sender/queue: 1,064; notification prompt: 62.
 The shared-tree check encountered an unrelated WorldClientLogic formatting edit while Claude's

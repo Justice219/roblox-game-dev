@@ -540,6 +540,8 @@ because they depend on meshes and layouts.
 
 ## 15. Add a new model, end to end
 
+In a new game that has not ported the `mesh-assets` gate yet, skip that step (see §17).
+
 1. **Decide the contract.** Key (area models use `A<N>_Name`, Dino `D<N>_`, Moon `M<N>_`),
    pivot, front direction, what animates (piece names), what is tinted, and the budget class (§4).
 2. **Write the builder** in your own `tools/blender/models/<file>.py` (or append to the module

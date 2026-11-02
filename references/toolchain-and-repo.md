@@ -362,6 +362,11 @@ Another reference covers these in depth. In short:
 
 ## 12. Bootstrapping a new game
 
+**What has actually been run (2026-11-01):** steps 1–4 in an empty folder, plus one module, one Lune suite
+and the two boot scripts. `check.sh` reached ALL PASSED and `rojo build` succeeded. Porting the framework
+and the art pipeline has not been run end to end, so expect to fix `require`s as you decouple them, and
+re-run `check.sh` after each module.
+
 The steps below assume the skill lives at `$SKILL` and the new repo at `$GAME`.
 
 ```bash
@@ -388,8 +393,12 @@ cp "$SKILL/scripts/lib/tools.sh" scripts/lib/
 cp "$SKILL/scripts/studio_mcp.py" "$SKILL/scripts/studio-lock.py" scripts/   # set LOCK_DIR
 chmod +x scripts/*.sh scripts/*.py
 # Studio MCP launcher (one primary process; see studio-mcp-and-screenshots.md §1)
+brew install node                # the launcher runs the MCP through npx
 mkdir -p ~/.local/bin
 install -m 700 "$SKILL/assets/templates/robloxstudio-mcp-launcher.py" ~/.local/bin/robloxstudio-mcp-codex
+
+# Serena (optional): set project_name in the copied file
+mkdir -p .serena && cp "$SKILL/assets/sellnukes-source/.serena/project.yml" .serena/
 
 # 4. Source tree and docs skeleton
 mkdir -p src/first src/server/{Services,Economy,Tests} src/client/{Controllers,UI} \
@@ -418,7 +427,7 @@ Then:
    **Art pipeline, if the game has models.** Prerequisites and copy list:
 
    ```bash
-   brew install --cask blender                  # then confirm the path, e.g. /opt/homebrew/bin/blender
+   brew install --cask blender   # the commands assume /opt/homebrew/bin/blender; symlink it or swap in your path
    python3 -m pip install pillow numpy          # contact sheets and stud textures
    S="$SKILL/assets/sellnukes-source"; B="$S/tools/blender"
    mkdir -p tools/blender/models tools/ui
@@ -432,8 +441,12 @@ Then:
    `Shared/World/{MeshPlacement,PreloadList}` and `Shared/Config/{WorldFxConfig,WorldMaterialConfig}`.
    `MeshLibrary` needs `PreloadList`, which reads SellNukes' `HubLayout`, `TycoonConfig`, `TycoonLogic`
    and `WorldsConfig`: rewrite `PreloadList` for the new game and remove `MeshLibrary`'s hub warm-up.
+   Keep what `MeshLibrary` calls: `tiers()`, `areaKeys(area)` and `plotKeys`, each giving `MeshAssets`
+   keys in preload order.
    Do not copy `MeshAssets.luau` (`sync_meshes.py` generates it). Run the upload tools once you have:
-   - an Open Cloud API key from the Creator Hub with asset read + write scopes, in a mode-600 file
+   - an Open Cloud API key from the Creator Hub with `asset:read` and `asset:write` (add `game-pass:read`,
+     `game-pass:write`, `developer-product:read` and `developer-product:write` for the products tool, and
+     the notification API system for return notifications), in a mode-600 file
      (`ROBLOX_OPEN_CLOUD_KEY=...`; set the path in `snkit/cloud.py`, whose default is SellNukes');
    - your numeric Roblox user id for `--user-id` (on your profile page's URL). The uploader assumes
      a user-owned asset, so a group-owned game needs a change to its `creator` field.

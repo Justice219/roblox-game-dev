@@ -164,7 +164,7 @@ Copy `assets/templates/` (aftman.toml, default.project.json, selene.toml, stylua
 dot-luaurc → `.luaurc`, dot-mcp.json → `.mcp.json` with your path) and `scripts/` into the new
 repo, leaving out `sync_from_game.py`, which only maintains this skill. Then install the tools (`aftman install`) and create `src/{client,server,shared}` plus
 `tests/`, `docs/owner-requests.md`, `<GAME>_CLAUDE_DOCUMENTATION.md` and a project CLAUDE.md
-holding the non-negotiables above. Copy what you need from `assets/sellnukes-source/`: the UI kit
+holding the twelve hard rules. Copy what you need from `assets/sellnukes-source/`: the UI kit
 (`src/client/UI`), the analytics and admin modules, the Lune loader (`tests/fixtures`) and the Blender
 toolkit (`tools/blender/snkit`). Replace SellNukes' own ids first; `SNAPSHOT.md` lists them. Make an
 original game: reuse this framework and process, not another game's design. The full step-by-step is

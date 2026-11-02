@@ -1155,7 +1155,7 @@ WHAT'S NEW. Full before/after table and evidence are in `docs/creator-dashboard.
   Tests `tests/plot-name.luau`, `tests/profile-logic.luau` §13; QA `tools/qa/r88_plot_name.py`.
 
 ### R89. Learn from other sell / tycoon games (owner recording)
-> "I recoreded some stuff from a couple other sell/tycoon games, /Users/jamesbayless/Movies/2026-10-31
+> "I recoreded some stuff from a couple other sell/tycoon games, ~/Movies/2026-10-31
 > 17-52-32.mov can you use any of the video to make our game super unique and competitive?"
 
 - The 14-min recording is studied frame by frame (research agent V-video): per-game mechanics, UI,
@@ -1835,3 +1835,8 @@ Studio place publication was performed. Runtime changes still require the owner'
   installed in `~/.claude/skills/roblox-game-dev`. Three fresh sessions test-drove it and their findings
   were fixed. One corrected my R135 wording: 148 vs 429 compared players with sessions, so it
   overstated the gap (the bug itself stands, proven in the code). Publishing 0.9.2 remains the owner's.
+  One session then re-checked its findings against the fixes; the new-game steps were run for real in
+  an empty folder (check.sh ALL PASSED, rojo build OK; porting the framework and art pipeline not
+  run end to end, and the reference says so).
+- Follow-up: "make sure you also install the skill for yourself" — installed at user level, so every
+  Claude Code session can use it; it appears in the available skills list.

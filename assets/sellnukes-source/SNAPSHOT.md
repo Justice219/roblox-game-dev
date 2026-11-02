@@ -3,10 +3,10 @@
 Read-only copy of the game, for reading and porting. Do not edit it here: the game repo is the
 source of truth. Refresh with `python3 scripts/sync_from_game.py <game repo>`.
 
-- Commit: `b8fc62b docs: finish the skill (R140), correct the tutorial-hint comparison`
+- Commit: `d25ae5c docs: record R140 outcome and the skill install`
 - Copied on: 2026-11-01
-- Files: 1072. Text only. Captures, reference images (see `assets/reference/`), caches and
-  private QA dumps are left out.
+- Files: 1072, plus the stud textures. Otherwise text only: captures, reference images (see
+  `assets/reference/`), caches and private QA dumps are left out.
 - Masked: 12 third-party player names (`<player>`) and 12 ids (`0`).
 
 ## Reusing this code in a new game

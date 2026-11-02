@@ -61,6 +61,7 @@ MASKED_NUMBERS = {
 }
 
 TOKEN = re.compile(r"[A-Za-z0-9_]+")
+HOME_PATH = re.compile(r"/Users/[A-Za-z0-9._-]+/")
 DATA_NAME = re.compile(r"[\"']SellNukes[A-Za-z]*_v\d+")
 
 # Anything matching these stops the sync. They are credential shapes, not game identifiers.
@@ -94,7 +95,8 @@ def mask(text: str, counts: Counter[str]) -> str:
             return "0"
         return token
 
-    return TOKEN.sub(replace, text)
+    # Local Mac paths in old notes: keep the path, drop the account name.
+    return HOME_PATH.sub("~/", TOKEN.sub(replace, text))
 
 
 def wanted(path: Path) -> bool:
@@ -167,8 +169,8 @@ source of truth. Refresh with `python3 scripts/sync_from_game.py <game repo>`.
 
 - Commit: `{commit}`
 - Copied on: {date.today().isoformat()}
-- Files: {total}. Text only. Captures, reference images (see `assets/reference/`), caches and
-  private QA dumps are left out.
+- Files: {total}, plus the stud textures. Otherwise text only: captures, reference images (see
+  `assets/reference/`), caches and private QA dumps are left out.
 - Masked: {counts['names']} third-party player names (`<player>`) and {counts['ids']} ids (`0`).
 
 ## Reusing this code in a new game
