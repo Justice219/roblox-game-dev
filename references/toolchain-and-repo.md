@@ -396,7 +396,7 @@ mkdir -p src/first src/server/{Services,Economy,Tests} src/client/{Controllers,U
 
 Then:
 
-5. **Port the framework from RoBeasts or SellNukes** rather than rewriting it:
+5. **Port the framework from `assets/sellnukes-source/`** (or the RoBeasts repo) rather than rewriting it:
    - `Shared/Net/{Remotes,Validate,ProfileDelta,WireSize}`
    - `Shared/Util/{Signal,Trove,RateLimiter,NumberFormat,TextUtil,MathUtil}`
    - `Shared/Config/{VersionConfig,ChangeNotesConfig}`

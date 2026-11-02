@@ -35,7 +35,9 @@ monetization, admin controls, or starting a new Roblox project.
 | `references/admin-panel.md` | The owner-only admin panel, its tabs, controls and security |
 | `references/server-architecture-and-security.md` | Services, validated remotes, data / receipts, performance rules, the security checklist |
 | `references/game-systems-design.md` | Tycoon economy, monetization, retention, pets, events, attack mode, a new-system checklist |
-| `scripts/` | `check.sh` (+ typecheck / compile / test runners), `studio_mcp.py`, `studio-lock.py` |
+| `references/hard-won-lessons.md` | What went wrong and the rule it produced: Studio, parallel builders, shared-tree commits, analytics, the Roblox algorithm |
+| `scripts/` | `check.sh` (+ typecheck / compile / test runners), `studio_mcp.py`, `studio-lock.py`, `sync_from_game.py` |
+| `assets/sellnukes-source/` | The real game: `src/`, `tests/`, `tools/`, `scripts/`, all docs and QA recipes (read-only snapshot; see its `SNAPSHOT.md`) |
 | `assets/templates/` | aftman.toml, default.project.json, selene.toml, stylua.toml, `.luaurc`, `.mcp.json` |
 | `assets/reference/` | The owner's reference screenshots, compressed |
 
@@ -44,5 +46,8 @@ monetization, admin controls, or starting a new Roblox project.
 - No secrets are included. Tokens and API keys stay where the scripts read them
   (e.g. `~/.robloxstudio-mcp/auth-token`, the experience's secrets store).
 - The reference screenshots are inspiration only; SellNukes is an original, kid-friendly game.
-- The source of truth stays the SellNukes repo (its `docs/`, `CLAUDE.md` and
-  `SELLNUKES_CLAUDE_DOCUMENTATION.md`). Refresh this skill when those change a lot.
+- The source of truth stays the SellNukes repo. After big changes, refresh the snapshot with
+  `python3 scripts/sync_from_game.py <path to SellNukes>`, then commit and push this repo. Reference
+  files are written by hand, so update them too when a system changes.
+- Third-party players' names and ids are masked in the snapshot. Your own game ids are kept; replace
+  them before reusing the code in another game (`SNAPSHOT.md` lists where they are).

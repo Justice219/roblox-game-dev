@@ -1,19 +1,17 @@
 ---
 name: roblox-game-dev
 description: >-
-  The complete playbook for building Roblox games the SellNukes way — Rojo + strict Luau +
-  Lune tests, a code-only stud-panel UI framework (console + mobile first), every model built in
-  Blender with scripted bpy builders and uploaded as MeshParts, purchases that "build in" with a
-  fly-in, Roblox Studio driven through the robloxstudio-mcp bridge (solo playtests, device-matrix
-  screenshots shown to the owner), an in-depth analytics layer with a Roblox "Recommended for You"
-  algorithm scorecard, an owner-only admin panel, secure server-authoritative economy /
-  monetization / retention systems, and the owner-request + living-docs workflow. Use this skill
-  whenever working on SellNukes or any Roblox / Luau game: adding a system or screen, making a
-  model in Blender, taking or showing Studio screenshots, writing Lune tests or the economy
-  simulator, answering a pasted analytics report, tuning pacing / prices, wiring dev products,
-  admin controls, notifications, or bootstrapping a new Roblox project — even when the request
-  does not say "skill" or "Roblox" explicitly (e.g. "the HUD covers my iPhone screen", "why are
-  players leaving", "make the pet model", "show me a screenshot").
+  Complete playbook for building Roblox games the SellNukes way: Rojo + strict Luau + Lune tests, a
+  code-only stud-panel UI framework (console + mobile first), Blender bpy models uploaded as
+  MeshParts, fly-in purchase build-ins, Studio automation with device-matrix screenshots, deep
+  analytics with a Recommended-for-You scorecard, an owner-only admin panel, secure
+  server-authoritative economy, monetization and retention, and the owner-request + living-docs
+  workflow. Includes the real SellNukes source. Use whenever working on SellNukes or any Roblox or
+  Luau game: adding a system or screen, making a Blender model, taking or showing Studio
+  screenshots, writing Lune tests, tuning pacing or prices, answering a pasted analytics report,
+  wiring dev products, admin controls or notifications, or starting a new Roblox project, even if
+  the request never says Roblox (for example "the HUD covers my iPhone screen", "why are players
+  leaving", "make the pet model", "show me a screenshot").
 ---
 
 # Roblox game development — the SellNukes playbook
@@ -45,6 +43,12 @@ Read this file first, then open only the reference you need:
 | Add owner-only controls, kill switches, forced events | `references/admin-panel.md` |
 | Write services, remotes, data stores, receipts; security + performance rules | `references/server-architecture-and-security.md` |
 | Design or tune a game system (economy, monetization, retention, pets, events, attack) | `references/game-systems-design.md` |
+| Run Studio, work in parallel, commit in a shared tree, or read live data | `references/hard-won-lessons.md` |
+| See how something is really implemented | `assets/sellnukes-source/` (the game's real code and docs) |
+
+References cite paths from the game repo (`src/client/UI/ScreenManager.luau`). The same paths exist
+under `assets/sellnukes-source/`. In the SellNukes repo itself, read the live files instead: the
+snapshot can be behind, and `assets/sellnukes-source/SNAPSHOT.md` says which commit it holds.
 
 ## The non-negotiables (why they exist)
 
@@ -147,9 +151,11 @@ Copy `assets/templates/` (aftman.toml, default.project.json, selene.toml, stylua
 dot-luaurc → `.luaurc`, dot-mcp.json → `.mcp.json` with your path) and `scripts/` into the new
 repo. Then install the tools (`aftman install`) and create `src/{client,server,shared}` plus
 `tests/`, `docs/owner-requests.md`, `<GAME>_CLAUDE_DOCUMENTATION.md` and a project CLAUDE.md
-holding the non-negotiables above. Port the UI kit (Create / Theme / StudUI / ScreenManager /
-HudZones) and the Analytics + Admin modules from the SellNukes / RoBeasts repos. The full
-step-by-step is in `references/toolchain-and-repo.md`.
+holding the non-negotiables above. Copy what you need from `assets/sellnukes-source/`: the UI kit
+(`src/client/UI`), the analytics and admin modules, the Lune loader (`tests/fixtures`) and the Blender
+toolkit (`tools/blender/snkit`). Replace SellNukes' own ids first; `SNAPSHOT.md` lists them. Make an
+original game: reuse this framework and process, not another game's design. The full step-by-step is
+in `references/toolchain-and-repo.md`.
 
 ## Bundled files
 
@@ -158,6 +164,9 @@ step-by-step is in `references/toolchain-and-repo.md`.
 - `scripts/studio_mcp.py`: CLI for the robloxstudio-mcp HTTP bridge. It reads the auth token from
   `~/.robloxstudio-mcp/auth-token` and never prints it.
 - `scripts/studio-lock.py`: the one-playtester-at-a-time lock.
+- `scripts/sync_from_game.py`: refreshes the source snapshot, masks third-party players and refuses
+  to finish if anything looks like a secret.
+- `assets/sellnukes-source/`: the real game code, tests, tools and docs (read-only snapshot).
 - `assets/templates/`: toolchain and project config files.
 - `assets/reference/`: the owner's UI / world reference screenshots, compressed and described in
   `references/reference-screenshots.md`. They are inspiration only; the game stays original.

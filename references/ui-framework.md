@@ -610,11 +610,15 @@ Split every non-trivial UI into two modules:
 - `chipText(live, nextLive, now, phone, localTime)` returns `LIVE: CONFETTI 3:12`,
   `SPRINKLES IN 15:40`, or on a phone just `0:13`.
 - `size(text, phone)` returns 52 design px tall on desktop, tablet and console, and 72 on phones
-  (≥ 44 pt tap, ≥ 14 pt text). The phone width is sized for "10:00", so the chip never jitters
-  while it ticks.
+  (≥ 44 pt tap, ≥ 14 pt text). The phone chip has one fixed width (159 design px, 99 pt), so it never
+  jitters while it ticks; a rare longer clock shrinks because the label is TextScaled.
 - `place({canvas, safeTop, size, gap, zones, obstacles, phone})` tries candidate spots in order:
-  topLeft → topRight → underTop on desktop, and rightOfTop → leftOfTop → underTop on phones. A
-  spot slides down past obstacles. The first clear fit wins. **`nil` means hide.**
+  topLeft → topRight → underTop on desktop, and rightOfTop → leftOfTop → underTopRight → underTop on
+  phones (underTop sits above the character's head, so it is the last resort). A spot slides down
+  past obstacles. The first clear fit wins. **`nil` means hide.** The winner is published as the
+  ScreenGui attribute `HappyHourChipSpot`, so a capture can be checked by number. Build placement
+  tests from zones measured on a device preset; the first version of this fix passed tests on a
+  made-up layout and still sat over the character on a real iPhone 14 (`hard-won-lessons.md` §4).
 - `shouldAnnounce(...)` decides on the start banner: once per event instance, deferred (not
   dropped) under the loading screen or tutorial.
 

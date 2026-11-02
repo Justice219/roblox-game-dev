@@ -1,0 +1,38 @@
+{
+  "className": "Folder",
+  "children": [
+    {
+      "name": "SNStuds",
+      "className": "MaterialVariant",
+      "properties": {
+        "BaseMaterial": "Plastic",
+        "ColorMap": "rbxassetid://111053696270611",
+        "NormalMap": "rbxassetid://88518149682413",
+        "RoughnessMap": "rbxassetid://93245873035569",
+        "StudsPerTile": 2.0
+      }
+    },
+    {
+      "name": "SNStudsSmall",
+      "className": "MaterialVariant",
+      "properties": {
+        "BaseMaterial": "Plastic",
+        "ColorMap": "rbxassetid://111053696270611",
+        "NormalMap": "rbxassetid://88518149682413",
+        "RoughnessMap": "rbxassetid://93245873035569",
+        "StudsPerTile": 1.0
+      }
+    },
+    {
+      "name": "SNStudsLarge",
+      "className": "MaterialVariant",
+      "properties": {
+        "BaseMaterial": "Plastic",
+        "ColorMap": "rbxassetid://111053696270611",
+        "NormalMap": "rbxassetid://88518149682413",
+        "RoughnessMap": "rbxassetid://93245873035569",
+        "StudsPerTile": 4.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+# This file lists tools managed by Aftman, a cross-platform toolchain manager.
+# For more information, see https://github.com/LPGhatguy/aftman
+#
+# Pins mirror the RoBeasts repo (the framework SellNukes reuses) so both repos format, lint and
+# type-check identically. Rojo is pinned to match the Studio plugin (7.7.1); the parent
+# RobloxGame/aftman.toml pins 7.7.0-rc.1, whose serve API the 7.7.1 plugin cannot read
+# ("attempt to index number with 'protocolVersion'").
+#
+#   rojo      sync src/ into Studio (`rojo serve`) + sourcemap for luau-lsp
+#   stylua    formatter (tabs, 120 columns; stylua.toml)
+#   luau-lsp  strict type-check (`./scripts/typecheck.sh`, our `tsc --noEmit`)
+#   selene    lint (selene.toml, Roblox std)
+#   lune      standalone Luau test runner (`./scripts/test-logic.sh`, tests/*.luau)
+
+[tools]
+rojo = "rojo-rbx/rojo@7.7.1"
+stylua = "johnnymorganz/stylua@2.5.2"
+luau-lsp = "johnnymorganz/luau-lsp@1.70.1"
+selene = "kampfkarren/selene@0.32.0"
+lune = "lune-org/lune@0.10.5"
