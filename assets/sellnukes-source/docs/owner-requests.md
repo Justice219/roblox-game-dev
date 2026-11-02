@@ -1828,3 +1828,10 @@ Studio place publication was performed. Runtime changes still require the owner'
 - Close those limits: bundle the real source, verify every reference against the repo, add a
   refresh script, test the skill in a fresh session, install it locally, retry the R138 screenshot.
   Publishing the game stays the owner's. → lead.
+- Done (lead, 2026-11-01): the skill now bundles the real source (`assets/sellnukes-source/`, third-party
+  players masked), `scripts/sync_from_game.py` refreshes it and refuses anything that looks like a
+  secret, `references/hard-won-lessons.md` holds the memory notes, every cited path was checked, the
+  description was cut to pass validation (it was 1180 characters, over the 1024 limit), and it is
+  installed in `~/.claude/skills/roblox-game-dev`. Three fresh sessions test-drove it and their findings
+  were fixed. One corrected my R135 wording: 148 vs 429 compared players with sessions, so it
+  overstated the gap (the bug itself stands, proven in the code). Publishing 0.9.2 remains the owner's.

@@ -3,9 +3,9 @@
 Read-only copy of the game, for reading and porting. Do not edit it here: the game repo is the
 source of truth. Refresh with `python3 scripts/sync_from_game.py <game repo>`.
 
-- Commit: `c5b5acd fix: keep the phone Happy Hour chip off the character (R138)`
+- Commit: `b8fc62b docs: finish the skill (R140), correct the tutorial-hint comparison`
 - Copied on: 2026-11-01
-- Files: 1070. Text only. Captures, reference images (see `assets/reference/`), caches and
+- Files: 1072. Text only. Captures, reference images (see `assets/reference/`), caches and
   private QA dumps are left out.
 - Masked: 12 third-party player names (`<player>`) and 12 ids (`0`).
 
@@ -21,5 +21,27 @@ These are SellNukes' own values. Replace them, or the new game will point at the
 | `src/shared/Config/NotifyConfig.luau` | notification string ids |
 | `src/shared/Config/IconAssets.luau`, mesh registries | uploaded asset ids |
 | `tools/monetization/state.json` | the publish tool's record of live products |
-| `default.project.json` | place settings |
-| DataStore and topic names (`SellNukes…_v1`) | use your own, or two games could share data |
+| `src/shared/Config/WorldMaterialConfig.luau`, `src/server/World/StudMaterialVariants.model.json` | uploaded stud texture ids |
+| `tools/blender/upload_meshes.py`, `tools/ui/upload_world_studs.py` | "SellNukes" in uploaded asset names |
+| `tools/blender/snkit/cloud.py` | `DEFAULT_KEY_FILE`, the Open Cloud key path |
+| `tools/blender/snkit/core.py` | the colour palette |
+| `scripts/studio-lock.py` | `LOCK_DIR`, the lock folder name |
+| `default.project.json` | name, Lighting, streaming, `HttpEnabled` (leave false until a feature needs HTTP) |
+
+Never copy `src/shared/Config/MeshAssets.luau`: it is generated, and its ids belong to this game.
+
+## Files naming a DataStore or topic
+
+Use your own names, or two games could share data:
+
+- `src/server/Analytics/AnalyticsStore.luau`
+- `src/server/Economy/ProfileStore.luau`
+- `src/server/Leaderboards/LeaderboardLogic.luau`
+- `src/server/Services/AnalyticsService.luau`
+- `src/server/Services/PlayerDataService.luau`
+- `src/shared/Config/AnalyticsConfig.luau`
+- `src/shared/Config/HappyHourConfig.luau`
+- `src/shared/Config/LeaderboardConfig.luau`
+- `src/shared/Config/NotifyConfig.luau`
+- `src/shared/Config/ShopConfig.luau`
+- `src/shared/Config/SocialConfig.luau`

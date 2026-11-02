@@ -385,8 +385,11 @@ aftman install                                        # accept the trust prompts
 mkdir -p scripts/lib
 cp "$SKILL"/scripts/{check,typecheck,compilecheck,test-logic}.sh scripts/
 cp "$SKILL/scripts/lib/tools.sh" scripts/lib/
-cp "$SKILL/scripts/studio_mcp.py" "$SKILL/scripts/studio-lock.py" scripts/
+cp "$SKILL/scripts/studio_mcp.py" "$SKILL/scripts/studio-lock.py" scripts/   # set LOCK_DIR
 chmod +x scripts/*.sh scripts/*.py
+# Studio MCP launcher (one primary process; see studio-mcp-and-screenshots.md §1)
+mkdir -p ~/.local/bin
+install -m 700 "$SKILL/assets/templates/robloxstudio-mcp-launcher.py" ~/.local/bin/robloxstudio-mcp-codex
 
 # 4. Source tree and docs skeleton
 mkdir -p src/first src/server/{Services,Economy,Tests} src/client/{Controllers,UI} \
@@ -412,6 +415,30 @@ Then:
    `.sn-*.lock`, `.DS_Store`, `.idea/`.
 7. **Add at least one Lune suite** (e.g. `tests/number-format.luau`), because `test-logic.sh`
    fails on an empty `tests/`.
+   **Art pipeline, if the game has models.** Prerequisites and copy list:
+
+   ```bash
+   brew install --cask blender                  # then confirm the path, e.g. /opt/homebrew/bin/blender
+   python3 -m pip install pillow numpy          # contact sheets and stud textures
+   S="$SKILL/assets/sellnukes-source"; B="$S/tools/blender"
+   mkdir -p tools/blender/models tools/ui
+   cp -R "$B"/{snkit,generate_world.py,upload_meshes.py,extract_meshes.luau,sync_meshes.py,contact_sheet.py,viewport_look.py} tools/blender/
+   cp "$B/models/__init__.py" tools/blender/models/
+   cp "$S"/tools/ui/{build,upload}_world_studs.py tools/ui/
+   mkdir -p assets/world && cp -R "$S/assets/world/studs" assets/world/
+   ```
+
+   Then port `Server/World/{MeshLibrary,WorldMaterials,StudMaterialVariants.model.json}`,
+   `Shared/World/{MeshPlacement,PreloadList}` and `Shared/Config/{WorldFxConfig,WorldMaterialConfig}`.
+   `MeshLibrary` needs `PreloadList`, which reads SellNukes' `HubLayout`, `TycoonConfig`, `TycoonLogic`
+   and `WorldsConfig`: rewrite `PreloadList` for the new game and remove `MeshLibrary`'s hub warm-up.
+   Do not copy `MeshAssets.luau` (`sync_meshes.py` generates it). Run the upload tools once you have:
+   - an Open Cloud API key from the Creator Hub with asset read + write scopes, in a mode-600 file
+     (`ROBLOX_OPEN_CLOUD_KEY=...`; set the path in `snkit/cloud.py`, whose default is SellNukes');
+   - your numeric Roblox user id for `--user-id` (on your profile page's URL). The uploader assumes
+     a user-owned asset, so a group-owned game needs a change to its `creator` field.
+   - a place: create and publish an empty experience in Studio first, then connect Rojo to it.
+
 8. **Write `CLAUDE.md`** with the twelve hard rules, Serena, toolchain, Studio MCP, code
    conventions, security, performance, context budget and docs sections. Then write a short
    `AGENTS.md` that points at it, `<GAME>_CLAUDE_DOCUMENTATION.md` (Big picture, Studio + tooling,

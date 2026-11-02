@@ -132,7 +132,8 @@ Rules learned the hard way:
 - **A background acquire that finished long ago means nothing.** Turns expire. Check `status`
   again before every Studio batch. Edit-mode art spawns and screenshots need the lock too.
 - **Fit a verification into one 10-minute turn.** Fix code between turns, not during one.
-- **A running playtest that no agent owns is probably the owner testing.** Do not stop it, do not
+- **A running playtest that no agent owns is probably the owner testing.** If a screenshot is due, tell
+  the owner it waits until they finish, and say the code is already committed. Do not stop it, do not
   start anything, and do not set a watcher that starts a capture when it ends (the owner may only be
   pausing). Release, tell the lead, and wait for an explicit go.
 - **Orphan rule (lead only).** The lead may stop an orphaned playtest only when its owner's lock is
@@ -232,6 +233,7 @@ These are real recipes from `tools/qa/*`:
 | Want | Server call (live VM) |
 |---|---|
 | A Happy Hour event live | `HappyHourService.force("confetti", 120)`. Ids: `confetti`, `sprinkle`, `doublePops`, `stampede`, `lowGravity`. Then `.stop()`, `.skip()`, `.setEnabled(false/true)` (kill switch). |
+| A free wheel spin | `LuckySpinService.setFree(p, 1)` (runner: `tools/qa/lucky_wheel.py`). Restore it afterwards. |
 | A partly or fully built plot | `TycoonAdmin.resetPlot(p)` → `setArea(p, 4)` → `rebuildPlot(p, false)` builds areas 1–3. `unlockAll(p)` → `rebuildPlot(p, false)` builds everything. Per world: `worldSetArea`, `worldUnlockAll`, `worldRebuildPlot`. |
 | Cash / rebirths | `TycoonAdmin.setCash(p, n)`, `setRebirths(p, n)`, `worldSetCash(p, "moon", n)`. |
 | A brand-new player | `PlayerDataService.enterNewPlayerModeAsync(p)` (admin New Player Mode: a sandbox profile that is never saved, where every pass reads as unowned). |
@@ -312,7 +314,8 @@ the image byte budget is shared across a call's entries. Use `target: "client-1"
 
 ## 9. Filing captures and showing the owner
 
-**Where captures go:** `docs/verification/<feature>/`, one folder per feature or request (e.g.
+**Where captures go:** new work uses `docs/verification/r<N>/<device>.jpg` plus a README (a real example
+is `docs/verification/r138/`). Older folders are named by feature, one per feature or request (e.g.
 `r89-events/`, `r122/`, `r78-ftue/`, `world-qa/<YYYYMMDD-HHMM>/`, `world2/pets/moon/`).
 
 **Naming:** `<feature>-<state>-<device>.jpg`, with device one of `phone | tablet | console |

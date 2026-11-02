@@ -173,8 +173,9 @@ end
 	R135: whether the CLIENT may send a checked first-minute claim yet. Every checked step needs
 	the plot reveal finished on the server (claimPlausible: plotRevealed) and the client sends each
 	step once per session, so a claim sent while the reveal was still playing was refused and never
-	re-sent: 148 "saw the tutorial hint" for 429 first-step hint arrows (report 2026-11-01). The
-	client waits for the replicated PlotRevealed attribute (the server's own fact) instead.
+	re-sent: 148 players "saw the tutorial hint" while the arrow counted 429 sessions and 418 new
+	players had bought the first pad (report 2026-11-01; players vs sessions, so a signal, not the
+	exact loss). The client waits for the replicated PlotRevealed attribute (the server's fact) instead.
 	Unchecked steps (loadingDone, hudShown) are always ready.
 	@param step         an AnalyticsConfig.Ftue.ClientSteps id
 	@param plotRevealed the local player's PlotRevealed attribute is true

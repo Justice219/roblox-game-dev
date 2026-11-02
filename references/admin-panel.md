@@ -339,6 +339,16 @@ end
 return ChestAdmin
 ```
 
+Set the switch once in the service's `Start`, or the check below reads "off" for everyone from boot:
+
+```lua
+ReplicatedStorage:SetAttribute(ChestConfig.EnabledAttribute, ChestConfig.DefaultEnabled)
+```
+
+This switch lasts only for one server and one run. For a kill switch that reaches every server and
+survives restarts, copy `Server/HappyHour/HappyHourOverrideStore`: versioned `UpdateAsync`, `PublishAsync`
+for speed, a poll in case a message is missed, and a `_Studio` suffix so tests never reach live servers.
+
 In the system's intent handler, the server is authoritative:
 
 ```lua

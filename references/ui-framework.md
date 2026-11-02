@@ -355,7 +355,15 @@ Zone names: `Left`, `Right`, `Top`, `Bottom`, `TopRight`, `Boosts` and `Hints`. 
 also avoid:
 - the Roblox top-bar buttons (`GuiService.TopbarInset`);
 - the thumb zones;
-- each other's published rects.
+- other chips, through `PopupQueue`: a chip publishes its rect with `setChipRect(kind, rect)`, and
+  `chipRects(exceptKind)` returns the others. `HudZones` has no chip zone.
+
+Only the Lucky arrow reads `chipRects` today; `HappyHourChipLogic.place` does not. A second chip in the
+phone's top band must pass `chipRects` to its `place` as obstacles, and Happy Hour must be changed to do
+the same, or the two can overlap. Test both chips live, on measured zones.
+
+For "is this feature ready?" use `RewardsBadges.forFeature(id)` and its `Updated` signal, not a loop or a
+new remote.
 
 When nothing fits cleanly, **hide the element**. Never squeeze it below its readable size. The
 Happy Hour pill and the Lucky Button arrow both do this.
@@ -583,7 +591,7 @@ Studio):
    `ScreenManager.open("Mailbox")` via `eval_client_runtime`.
 4. Run `capture_device_matrix` with `iphone_14` landscape, `ipad_10th_generation`, `xbox` and
    `hd_1080`.
-5. Save the images to `docs/verification/<feature>/<shot>-{phone,tablet,console,desktop}.jpg`.
+5. Save the images as `docs/verification/r<N>/<device>.jpg` with a README, then `open` them (R12).
 6. Release the lock.
 
 `tools/qa/*.py` scripts wrap this, for example `matrix()` in `tools/qa/attack_view.py`. When the

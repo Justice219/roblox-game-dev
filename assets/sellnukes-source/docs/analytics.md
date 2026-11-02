@@ -152,8 +152,9 @@ agrees with the server's own state (reveal done; a tutorial running; the server-
 `firstScreenClosed` only once the replicated `PlotRevealed` attribute is true
 (`FtueLogic.claimReady`); before that, a hint shown or a window closed during the plot reveal
 spent the once-per-session send on a claim the server refused, so builds ≤ 0.9.1 under-read
-`tutorialSeen` (148 vs 429 first-step arrows on 2026-11-01; compare `tutClient:1`, which is
-unchecked). The perf `boot` histogram now measures the real
+`tutorialSeen` (2026-11-01: 148 players vs 429 first-step arrows and 418 first pads). `tutClient:1` is
+unchecked, but it counts sessions, not players, and has no build slice: treat the gap as a signal,
+and compare `build:*:ftue:tutorialSeen / ftue:joined` across builds for the real change. The perf `boot` histogram now measures the real
 loading-screen wait (`BootSeconds` at hand-off; it used to take `time()` before the screen ended).
 Each counts **once per tracked new player**, across sessions; `ftueS1:<step>` says it
 happened in session 1, `ftueMin:<step>` sums play minutes at the moment (average = ÷ count),

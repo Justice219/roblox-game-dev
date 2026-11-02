@@ -41,7 +41,11 @@ FILES = (
     "selene.toml",
     "stylua.toml",
     ".luaurc",
+    "AGENTS.md",
+    ".serena/project.yml",
 )
+# Small binaries the tools need (the stud textures, so Blender previews keep their studs).
+BINARY_TREES = ("assets/world/studs",)
 TEXT_SUFFIXES = {".luau", ".lua", ".py", ".json", ".md", ".txt", ".sh", ".toml", ".yaml", ".yml"}
 SKIP_PARTS = {"__pycache__", ".ruff_cache", ".git", "node_modules"}
 
@@ -57,6 +61,7 @@ MASKED_NUMBERS = {
 }
 
 TOKEN = re.compile(r"[A-Za-z0-9_]+")
+DATA_NAME = re.compile(r"[\"']SellNukes[A-Za-z]*_v\d+")
 
 # Anything matching these stops the sync. They are credential shapes, not game identifiers.
 FORBIDDEN = {
@@ -123,6 +128,7 @@ def main() -> int:
     shutil.rmtree(DEST, ignore_errors=True)
     counts: Counter[str] = Counter()
     problems: list[str] = []
+    data_files: set[str] = set()
     total = 0
     for source in source_files(game):
         text = source.read_text(encoding="utf-8", errors="replace")
@@ -135,11 +141,20 @@ def main() -> int:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(text, encoding="utf-8")
         total += 1
+        stores = DATA_NAME.findall(text) if relative.parts[0] == "src" else []
+        if stores:
+            data_files.add(str(relative))
 
     if problems:
         shutil.rmtree(DEST, ignore_errors=True)
         print("REFUSED: possible secrets, nothing kept:", *problems, sep="\n  ", file=sys.stderr)
         return 1
+
+    for tree in BINARY_TREES:
+        if (game / tree).is_dir():
+            # Textures and their manifest only: upload logs are private and not needed to reuse them.
+            keep = shutil.ignore_patterns("upload-*")
+            shutil.copytree(game / tree, DEST / tree, ignore=keep)
 
     commit = subprocess.run(
         ["git", "-C", str(game), "log", "-1", "--format=%h %s"], capture_output=True, text=True
@@ -168,8 +183,20 @@ These are SellNukes' own values. Replace them, or the new game will point at the
 | `src/shared/Config/NotifyConfig.luau` | notification string ids |
 | `src/shared/Config/IconAssets.luau`, mesh registries | uploaded asset ids |
 | `tools/monetization/state.json` | the publish tool's record of live products |
-| `default.project.json` | place settings |
-| DataStore and topic names (`SellNukes…_v1`) | use your own, or two games could share data |
+| `src/shared/Config/WorldMaterialConfig.luau`, `src/server/World/StudMaterialVariants.model.json` | uploaded stud texture ids |
+| `tools/blender/upload_meshes.py`, `tools/ui/upload_world_studs.py` | "SellNukes" in uploaded asset names |
+| `tools/blender/snkit/cloud.py` | `DEFAULT_KEY_FILE`, the Open Cloud key path |
+| `tools/blender/snkit/core.py` | the colour palette |
+| `scripts/studio-lock.py` | `LOCK_DIR`, the lock folder name |
+| `default.project.json` | name, Lighting, streaming, `HttpEnabled` (leave false until a feature needs HTTP) |
+
+Never copy `src/shared/Config/MeshAssets.luau`: it is generated, and its ids belong to this game.
+
+## Files naming a DataStore or topic
+
+Use your own names, or two games could share data:
+
+{chr(10).join(f"- `{{name}}`".format(name=name) for name in sorted(data_files))}
 """,
         encoding="utf-8",
     )

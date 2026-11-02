@@ -220,7 +220,10 @@ reveal, when the server refused it as implausible, and it never re-sent. The rep
 "saw the hint" for 429 first-step hint arrows. The client now waits for the replicated
 `PlotRevealed` attribute. **Lesson:** when a server check can refuse a once-only client claim,
 make the client wait for the same fact before sending. Then compare the checked step with an
-unchecked twin (here `tutClient:1`).
+unchecked twin (here `tutClient:1`). Mind the units: `ftue:*` counts each new player once while
+`tutClient:*` counts per session and has no build slice, so the raw gap overstates the loss. Use it as a
+signal, then prove the cause in the code and watch `build:*:ftue:tutorialSeen ÷ ftue:joined` on the next
+build.
 
 **Server-observed clicks.** In R137, offer BUY presses are not a new remote.
 `MonetizationService`'s `PromptProduct` / `PromptPass` handlers fire
@@ -584,6 +587,8 @@ The owner pastes COPY FOR AI and asks something like "any news on analytics?" or
 leaving so early". Follow `references/owner-rules-and-workflow.md` and log the message first. Then
 work through these steps:
 
+0. **Ask which code rendered the report.** It is built by the code of the server that generated it. A
+   label you already fixed (PARTIAL, "click 0 (0%)") means the fix is not live, not that it failed.
 1. **Note the window.** A range that includes today is provisional, because servers flush every
    minute. Never compare a partial day with a closed day as if both were complete. All days are
    UTC.
@@ -686,6 +691,8 @@ player-day.
 
 ## 10. Reading live data through Studio
 
+Family keys also include `orders`, which is retired (R128) and only holds old days.
+
 The Open Cloud key on disk has no DataStore scope; DataStore calls return 403
 INSUFFICIENT_SCOPE. Read the live store **from the already-open, MCP-connected place**, in edit
 mode. This needs no playtest and no studio lock. Never print any key or token.
@@ -761,7 +768,7 @@ server's memory counters.
 ```lua
 -- src/shared/Config/AnalyticsConfig.luau — append under Metrics.retention
 ["chest:open:<chestId>"] = "treasure chests opened (ChestService.open success path)",
-["chest:refused:<cooldown|reach|locked|rate|other>"] = "refused chest opens by reason",
+["chest:refused:<cooldown|reach|locked|rate|off|other>"] = "refused chest opens by reason",
 ["chest:gems"] = "gems paid by chests (amount; also economy earn:gems:chest)",
 ```
 

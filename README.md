@@ -38,7 +38,7 @@ monetization, admin controls, or starting a new Roblox project.
 | `references/hard-won-lessons.md` | What went wrong and the rule it produced: Studio, parallel builders, shared-tree commits, analytics, the Roblox algorithm |
 | `scripts/` | `check.sh` (+ typecheck / compile / test runners), `studio_mcp.py`, `studio-lock.py`, `sync_from_game.py` |
 | `assets/sellnukes-source/` | The real game: `src/`, `tests/`, `tools/`, `scripts/`, all docs and QA recipes (read-only snapshot; see its `SNAPSHOT.md`) |
-| `assets/templates/` | aftman.toml, default.project.json, selene.toml, stylua.toml, `.luaurc`, `.mcp.json` |
+| `assets/templates/` | aftman.toml, default.project.json, selene.toml, stylua.toml, `.luaurc`, `.mcp.json`, the Studio MCP launcher |
 | `assets/reference/` | The owner's reference screenshots, compressed |
 
 ## Notes

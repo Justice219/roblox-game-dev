@@ -47,10 +47,14 @@ Read this file first, then open only the reference you need:
 | See how something is really implemented | `assets/sellnukes-source/` (the game's real code and docs) |
 
 References cite paths from the game repo (`src/client/UI/ScreenManager.luau`). The same paths exist
-under `assets/sellnukes-source/`. In the SellNukes repo itself, read the live files instead: the
+under `assets/sellnukes-source/`. Docs also use shorthand: `Server/…` = `src/server/…`,
+`Shared/…` = `src/shared/…`, `Client/…` or a client folder such as `HappyHour/…` = `src/client/…`, and
+UI folders such as `Widgets/…`, `Kit/…`, `Hud/…` or `Screens/…` = `src/client/UI/…`. In the SellNukes repo itself, read the live files instead: the
 snapshot can be behind, and `assets/sellnukes-source/SNAPSHOT.md` says which commit it holds.
 
 ## The non-negotiables (why they exist)
+
+This is the short form. The full twelve hard rules are in `references/owner-rules-and-workflow.md`.
 
 1. **Act autonomously.** Never ask the owner clarifying questions. Decide, write the decision
    into the docs, keep building. Stop only for things only the owner can do (publishing, Robux
@@ -90,8 +94,10 @@ snapshot can be behind, and `assets/sellnukes-source/SNAPSHOT.md` says which com
 5. **Test.** Add or extend a Lune suite in `tests/`, including a regression test that would fail
    on the old code. Run `./scripts/check.sh --fix` until ALL PASSED.
 6. **Verify in Studio when allowed or asked:** studio lock → solo playtest → force the state →
-   `capture_device_matrix` (phone, tablet, console) → stop → release. Show the owner the image
-   paths. If Studio still runs the old code, the Rojo plugin needs reconnecting: tell the owner.
+   `capture_device_matrix` (phone, tablet, console) → stop → release. Look at the images yourself,
+   open them on the owner's Mac (`open <file>`, owner rule R12) and give the paths. If Studio still
+   runs the old code, the Rojo plugin needs reconnecting: tell the owner. If a playtest no agent
+   started is running, the owner is probably testing: don't touch it, and say the screenshot waits.
 7. **Document.** Update the system's `docs/<system>.md`, the change log in
    `SELLNUKES_CLAUDE_DOCUMENTATION.md`, and the request's Done line. For player-facing changes,
    bump `VersionConfig` and add a WHAT'S NEW line (`ChangeNotesConfig`).
@@ -134,22 +140,29 @@ leaving?". Do this:
 5. **Propose, then ship when told** ("do it", "do whatever you want and fix"). Re-pace with the
    economy simulator; never guess prices.
 
-Details, worked examples and every key: `references/analytics.md`.
+Before trusting a label in the report, ask which code rendered it: a report is built by the code of
+the server that generated it, so a fix you committed may not be live yet. The Builds table shows what
+is running; `references/owner-rules-and-workflow.md` maps R-numbers to versions.
+
+Start at `references/analytics.md` §9 for the full procedure (§5 for the scorecard's denominators). That
+file is long, so read it by section.
 
 ## Showing the owner screenshots
 
 The owner wants to *see* changes on real devices. Use `capture_device_matrix` with phone
-(e.g. `iphone_14`, landscape), tablet and console presets during a solo playtest. Force the game
-state first (admin APIs via `execute_luau` on the server, e.g. a forced Happy Hour; real world
-travel, not CFrame teleports). File the captures under `docs/verification/<feature>/` with a
-README saying what to look at, and give the owner the paths. Recipes:
-`references/studio-mcp-and-screenshots.md`.
+(e.g. `iphone_14`, landscape), tablet and console presets during a solo playtest, one device per call.
+Force the game state first (admin APIs through `eval_server_runtime`, e.g. a forced Happy Hour; real
+world travel, not CFrame teleports). Check the capture yourself and read the real numbers before you
+describe it: where the code meant to put something is not evidence. File captures as
+`docs/verification/r<N>/<device>.jpg` with a README saying what to look at, run `open` on them, and
+give the paths. Recipes: `references/studio-mcp-and-screenshots.md`; a real example:
+`assets/sellnukes-source/docs/verification/r138/README.md`.
 
 ## Bootstrapping a new Roblox game this way
 
 Copy `assets/templates/` (aftman.toml, default.project.json, selene.toml, stylua.toml,
 dot-luaurc → `.luaurc`, dot-mcp.json → `.mcp.json` with your path) and `scripts/` into the new
-repo. Then install the tools (`aftman install`) and create `src/{client,server,shared}` plus
+repo, leaving out `sync_from_game.py`, which only maintains this skill. Then install the tools (`aftman install`) and create `src/{client,server,shared}` plus
 `tests/`, `docs/owner-requests.md`, `<GAME>_CLAUDE_DOCUMENTATION.md` and a project CLAUDE.md
 holding the non-negotiables above. Copy what you need from `assets/sellnukes-source/`: the UI kit
 (`src/client/UI`), the analytics and admin modules, the Lune loader (`tests/fixtures`) and the Blender

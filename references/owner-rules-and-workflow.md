@@ -83,7 +83,7 @@ implemented). Never delete entries; mark superseded ones instead."
 
 Conventions:
 
-- **R numbers are global and sequential** (R1 … R139 so far). Before writing a new number, grep
+- **R numbers are global and sequential** (R1 onward). Before writing a new number, grep
   for the newest `### R` heading again. Other sessions append at the same time, and two sessions
   once both wrote R128 to R130 on the same day.
 - **Quote first.** Keep the owner's typos (`"stop runing multiplayer playtests"`). The quote is
@@ -151,7 +151,7 @@ lands in `CLAUDE.md` and/or a memory file, and the newer ones win over older def
 | R72 | "stop runing multiplayer playtests" | Solo playtests only. An 8-client test that reported `multiplayer_start_not_detected` was never ended, ran for about 7 hours, exhausted memory and hung Studio for every agent. | `scripts/studio_mcp.py` `guard_tool` refuses `multiplayer_playtest` (only `status` / `end` / `stop` pass). |
 | R92 | "bro just finish em it just feels like they are oging in circles" | When builders run in parallel, they write code, Lune tests and a green `check.sh` only, with no Studio. The lead runs ONE consolidated Studio pass, then commits. Never park finished work behind flags. | Memory `builders-no-studio`; every builder brief. |
 | R132 | "skip any studio playets for your changes, just code checks thats it" | Verify your own changes with `./scripts/check.sh` only. Do not start solo playtests or device-matrix captures. List what the owner should look at in Studio ("Owner eyeball: ..."). The owner playtests live while agents work, and an agent playtest collides with theirs. | Memory `code-checks-only`; overrides the capture step of rule 11. |
-| R138 follow-up | "show me an ss when you do it" | An explicit request for a screenshot is the exception to R132. Run a solo Studio check while holding the lock, and send the image. | Per request only. |
+| R138 follow-up | "show me an ss when you do it" | An explicit request for a screenshot is the exception to R132. Run a solo Studio check while holding the lock, then open the images on the owner's Mac (R12) and give the paths. | Per request only. |
 
 **General pattern:** when the owner corrects how you work, rather than what you build, log it
 as an R entry. Add it to `CLAUDE.md` or a memory file with the reason (**Why:**) and how to
@@ -256,6 +256,7 @@ The system is identical to RoBeasts. A note written for one game drops into the 
 | Change | Bump | WHAT'S NEW |
 |--------|------|------------|
 | Player-facing **feature** | MINOR `0.8.0 → 0.9.0` (PATCH back to 0) | Append ONE new note with `Version = Current`. |
+| Small helper not worth a popup for every returning player | PATCH (a judgement call; no fixed rule exists) | Same as a fix. Choose MINOR when it is worth showing everyone, because a new note opens for them. |
 | **Fix or tuning** a player can notice | PATCH `0.9.1 → 0.9.2` | Append one-line items (usually `FIXED` / `IMPROVED`) to the NEWEST note. The note keeps its Version. |
 | Relaunch-sized change (the owner decides; `1.0.0` = public launch) | MAJOR | A new note. |
 | Internal only (tests, docs, admin tools, refactors, analytics measurement fixes) | none | none |
@@ -294,8 +295,8 @@ The system is identical to RoBeasts. A note written for one game drops into the 
 5. **Player-facing?** Bump `VersionConfig.Current` and update `ChangeNotesConfig` (section 6),
    with truth checks for new numbers.
 6. **Close the loop** in the request entry with a `Done (<who>, <version>): ...` line.
-7. **Verification level**: code checks only (R132) unless the owner asks for screenshots. Then
-   list "Owner eyeball: ..." items.
+7. **Verification level**: by default, code checks only (R132), and list "Owner eyeball: ..." items
+   for the owner to look at. When the owner asks to see it, run the Studio pass and open the images.
 8. **Commit only your own hunks** (section 8). Subject `feat: 0.9.2 — ... (R137)` /
    `fix: ... (R138)` / `feat(analytics): ... (R136)` / `docs: ...`. The body gives the owner
    quote, before → after numbers, and `check.sh ALL PASSED (110 suites); code checks only (R132).`
@@ -459,3 +460,18 @@ on analytics?" or "why are people leaving so early". Answer it as follows (R129,
 Live data can also be read directly. That is a read-only DataStore read through Studio
 `execute_luau` in the connected place, which another reference covers. Never print an API key
 while doing it.
+
+## Which version shipped which request
+
+Reports name builds, requests name R-numbers. These are the ones analysis most often needs:
+
+| Requests | Version | Why it matters when reading a report |
+|---|---|---|
+| R78 | 0.6.0 | Retention pack; client first-minute funnel steps |
+| R122 | 0.8.0 | `rbx:*` signals begin, so older builds have none; faster start |
+| R130 | 0.9.0 | BoomDash manager at pad 4; Dino popup waits for area 4 |
+| R133, R134 | 0.9.1 | Attack picker, lobby pads |
+| R135–R138 | 0.9.2 | Scorecard denominators, tutorial-hint race, notification status, offer clicks, re-pace, phone chip |
+
+R135's measurement fixes needed no version bump of their own, so they went live with the next
+publish. A report still printing the old labels means the code is not live yet.

@@ -139,9 +139,11 @@ reasoning about overlaps.
 bounce because it divided by every player; on the servers that recorded it the figure was 21 %. Divide
 by the population that could have recorded the number, and compare builds.
 
-**A low number may be a telemetry bug.** "Saw the tutorial hint" read 30 % while the same hint's arrow
-was shown to 88 %. The client sent the claim during the plot reveal, the server refused it, and the
-once-per-session send was spent. Compare a suspicious step with a neighbouring unchecked counter.
+**A low number may be a telemetry bug.** "Saw the tutorial hint" read 148 players while the same hint's
+arrow counted 429 sessions, and 85 % of new players had already bought the pad it points at. The client
+sent the claim during the plot reveal, the server refused it, and the once-per-session send was spent.
+Compare a suspicious step with a neighbouring counter, but check the units: that first comparison set
+players against sessions, which overstated the gap. The proof was in the code, not the ratio.
 
 **Zero may mean nobody calls it.** Every "click 0 %" came from a recorder with no caller. Grep for the
 caller before believing a zero.
@@ -154,7 +156,7 @@ connected place (edit context, no playtest, no lock) with
 - Keys: `meta` (`{firstDay = <day number>}`), `d:<yyyy-mm-dd>:<family>:0` (value
   `{c = counters, v = version}`), `c:<yyyy-mm-dd>` (a compacted day, may be absent).
 - Families: core, revenue, economy, tycoon, worlds, retention, pets, crates, attack, event, social,
-  kinetic, orders, health.
+  kinetic, orders (retired R128, old days only), health.
 - Return `HttpService:JSONEncode(...)` and parse `returnValue` in Python. A full dump is about 110 KB
   and takes under a minute. Read-only; never print a key.
 

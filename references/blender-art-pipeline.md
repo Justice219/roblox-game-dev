@@ -594,9 +594,15 @@ because they depend on meshes and layouts.
 
 ## 17. Porting the pipeline to a new game
 
+The exact copy commands, prerequisites and Open Cloud key setup are in `toolchain-and-repo.md` §12.
+The quality gates (`mesh-assets`, `zfight-audit`, the overlap check) read SellNukes' `ArtWorlds` and
+`AreaLayouts`, so port them after the new game has its own layouts; until then, review with contact
+sheets. Skipping the stud texture step does not raise an error, but previews lose their studs.
+
 Carry these over unchanged; they are game-agnostic:
 
-1. `snkit/` (rename it; change only the palette in `core.py`) and the `models/` auto-discovery
+1. `snkit/` (keep the name, because every builder and tool imports it; change only the palette in
+   `core.py`) and the `models/` auto-discovery
    with `BUILDERS` dicts and duplicate-key failure.
 2. `generate_world.py`: budgets, piece cap, manifest merge under a lock, FBX + GLB + previews.
 3. `snkit/cloud.py` + `upload_meshes.py` + `extract_meshes.luau`: hash-identity, journal before

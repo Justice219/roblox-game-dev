@@ -127,6 +127,15 @@ mode, Harvest Feast event, leaderboards/badges, live product ids, full multiplay
 
 ## Change log
 
+### 2026-11-01 — R138 phone chip placement + R140 skill finished
+
+R138: the Studio check found the first fix sitting above the character on a measured iPhone 14. The chip
+is now a fixed 159 design px, `HappyHourChipLogic` gained `underTopRight`, tests use measured zones, and
+the winning spot is the attribute `HappyHourChipSpot`. Captures: docs/verification/r138/. R140: the skill
+now bundles the source and a sync script: `python3 scripts/sync_from_game.py <this repo>` in the skill
+repo, after big changes. Also corrected the R135 wording in docs/analytics.md and `FtueLogic`: 148 vs 429
+compared players with sessions.
+
 ### 2026-11-01 — R139 the `roblox-game-dev` skill (docs only)
 
 Everything documented about building this game now also lives in a Claude Code skill, private repo
