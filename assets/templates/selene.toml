@@ -1,0 +1,3 @@
+# selene lint config — https://kampfkarren.github.io/selene/
+# "roblox" std makes selene aware of every Roblox global (game, workspace, Vector3, ...).
+std = "roblox"
